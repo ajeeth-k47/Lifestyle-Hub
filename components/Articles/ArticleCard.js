@@ -1,11 +1,10 @@
-// components/Articles/ArticleCard.js
 "use client";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
 export default function ArticleCard({ article, priority = false }) {
-  const [summary, setSummary] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [summary, setSummary] = useState(article.fields.aiSummary || null);
+  const [loading, setLoading] = useState(!article.fields.aiSummary);
   const [error, setError] = useState(null);
   const cardRef = useRef(null);
   const hasFetched = useRef(false);
@@ -13,6 +12,8 @@ export default function ArticleCard({ article, priority = false }) {
   const articleUrl = `/article/${article.fields.slug}`;
 
   useEffect(() => {
+    if (article.fields.aiSummary) return;
+
     if (!priority && !hasFetched.current) {
       const observer = new IntersectionObserver(
         ([entry]) => {
@@ -32,10 +33,10 @@ export default function ArticleCard({ article, priority = false }) {
     } else if (priority && !hasFetched.current) {
       fetchSummary();
     }
-  }, [priority]);
+  }, [priority, article.fields.aiSummary]);
 
   async function fetchSummary() {
-    if (hasFetched.current) return;
+    if (hasFetched.current || article.fields.aiSummary) return;
 
     hasFetched.current = true;
     setLoading(true);
@@ -59,7 +60,6 @@ export default function ArticleCard({ article, priority = false }) {
       const data = await response.json();
       setSummary(data.data.summary);
     } catch (err) {
-      console.error("Error fetching summary:", err);
       setError("Failed to load summary");
       setSummary(article.fields.content.substring(0, 150) + "...");
     } finally {
@@ -75,40 +75,40 @@ export default function ArticleCard({ article, priority = false }) {
       aria-labelledby={`article-title-${article.sys.id}`}
     >
       <div className="card-body d-flex flex-column">
-        {/* Title */}
-        <h5
+        <h3
           id={`article-title-${article.sys.id}`}
-          className="card-title text-dark"
+          className="h5 card-title text-dark mb-3"
         >
           {article.fields.title}
-        </h5>
+        </h3>
 
-        {/* Summary Section */}
-        <div className="card-text flex-grow-1 mb-3 p-2">
+        <div className="card-text flex-grow-1 mb-3">
           {loading && (
-            <div aria-live="polite">
+            <div aria-live="polite" aria-label="Loading article summary">
               <div className="placeholder-glow">
-                <span className="placeholder col-12 placeholder-lg"></span>
-                <span className="placeholder col-10 placeholder-lg"></span>
-                <span className="placeholder col-8 placeholder-lg"></span>
+                <span
+                  className="placeholder col-12 mb-2"
+                  aria-hidden="true"
+                ></span>
+                <span
+                  className="placeholder col-10 mb-2"
+                  aria-hidden="true"
+                ></span>
+                <span className="placeholder col-8" aria-hidden="true"></span>
               </div>
+              <span className="visually-hidden">Loading summary content</span>
             </div>
           )}
 
           {error && (
-            <p className="text-danger small" role="alert">
+            <p className="text-danger small mb-0" role="alert">
               {error}
             </p>
           )}
 
-          {summary && !loading && <p className="text-muted">{summary}</p>}
-
-          {!summary && !loading && !error && (
-            <p className="text-muted small">Summary will load shortly...</p>
-          )}
+          {summary && !loading && <p className="text-muted mb-0">{summary}</p>}
         </div>
 
-        {/* View Article Link */}
         <div className="mt-auto">
           <Link
             href={articleUrl}

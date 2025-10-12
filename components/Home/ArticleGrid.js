@@ -1,4 +1,3 @@
-// components/Home/ArticleGrid.js
 import ArticleCard from "../Articles/ArticleCard";
 
 export default function ArticleGrid({ articles }) {
@@ -11,12 +10,12 @@ export default function ArticleGrid({ articles }) {
   }
 
   return (
-    <div className="row g-4">
+    <section aria-label="Articles grid" className="row g-4">
       {articles.map((article, index) => (
         <div key={article.sys.id} className="col-md-6 col-lg-4">
           <ArticleCard article={article} priority={index < 3} />
         </div>
       ))}
-    </div>
+    </section>
   );
 }

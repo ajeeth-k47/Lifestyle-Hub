@@ -1,4 +1,3 @@
-// app/page.js
 import { getAllArticles } from "../lib/contentful";
 import Header from "../components/Layout/Header";
 import ArticleGrid from "../components/Home/ArticleGrid";
@@ -8,11 +7,12 @@ const ARTICLES_PER_PAGE = 6;
 
 export default async function Home({ searchParams }) {
   const { page: pageParam } = await searchParams;
-  const page = Number(pageParam) || 1;
+  const currentPage = Number(pageParam) || 1;
+
   try {
     const allArticles = await getAllArticles();
     const totalPages = Math.ceil(allArticles.length / ARTICLES_PER_PAGE);
-    const startIndex = (page - 1) * ARTICLES_PER_PAGE;
+    const startIndex = (currentPage - 1) * ARTICLES_PER_PAGE;
     const currentArticles = allArticles.slice(
       startIndex,
       startIndex + ARTICLES_PER_PAGE
@@ -22,12 +22,12 @@ export default async function Home({ searchParams }) {
       <div className="min-vh-100 bg-light">
         <Header />
         <main className="container py-4">
-          <h3 className="pb-4">Lifestyle Hub - Latest Articles</h3>
+          <h1 className="h3 pb-4">Latest Articles</h1>
 
           <ArticleGrid articles={currentArticles} />
 
           {allArticles.length > ARTICLES_PER_PAGE && (
-            <Pagination currentPage={page} totalPages={totalPages} />
+            <Pagination currentPage={currentPage} totalPages={totalPages} />
           )}
         </main>
       </div>
