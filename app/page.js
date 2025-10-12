@@ -7,8 +7,8 @@ import Pagination from "../components/Home/Pagination";
 const ARTICLES_PER_PAGE = 6;
 
 export default async function Home({ searchParams }) {
-  const page = Number(searchParams?.page) || 1;
-
+  const { page: pageParam } = await searchParams;
+  const page = Number(pageParam) || 1;
   try {
     const allArticles = await getAllArticles();
     const totalPages = Math.ceil(allArticles.length / ARTICLES_PER_PAGE);

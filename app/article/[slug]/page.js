@@ -11,7 +11,8 @@ export async function generateStaticParams() {
 }
 
 export default async function ArticlePageRoute({ params }) {
-  const article = await getArticleBySlug(params.slug);
+  const { slug } = await params;
+  const article = await getArticleBySlug(slug);
 
   if (!article) {
     notFound();
