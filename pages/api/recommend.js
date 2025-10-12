@@ -31,7 +31,7 @@ export default async function handler(req, res) {
     // Filter out the current article from recommendations
     const recommendations = similarArticles
       .filter((article) => article.slug !== articleSlug)
-      .slice(0, 3);
+      .slice(0, 2);
 
     res.json({
       success: true,

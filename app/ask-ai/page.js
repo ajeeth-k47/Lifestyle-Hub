@@ -101,9 +101,6 @@ export default function AskAIPage() {
                 <div className="card-body">
                   <h5 className="card-title">Lily's Answer:</h5>
                   <p className="card-text">{response.answer}</p>
-                  <small className="text-muted">
-                    Based on {response.articlesUsed} articles
-                  </small>
                 </div>
               </div>
             )}
