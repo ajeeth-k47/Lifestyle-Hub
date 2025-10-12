@@ -1,6 +1,24 @@
 import { getAllArticles, getArticleBySlug } from "../../lib/contentful";
 import { semanticSearch } from "../../lib/pinecone-client";
 
+// Configuration
+const MAX_RECOMMENDATIONS = 2;
+const CONTENT_PREVIEW_LENGTH = 200;
+
+// Build search query from article data
+function buildSearchQuery(article) {
+  const { title, content } = article.fields;
+  const contentPreview = content.substring(0, CONTENT_PREVIEW_LENGTH);
+  return `${title} ${contentPreview}`;
+}
+
+// Filter and limit recommendations
+function processRecommendations(articles, currentSlug, limit) {
+  return articles
+    .filter((article) => article.slug !== currentSlug)
+    .slice(0, limit);
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -19,30 +37,30 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: "Article not found" });
     }
 
-    const allArticles = await getAllArticles();
+    const searchQuery = buildSearchQuery(currentArticle);
+    const similarArticles = await semanticSearch(
+      searchQuery,
+      MAX_RECOMMENDATIONS + 1
+    );
 
-    // Use the current article's content to find similar articles
-    const searchQuery = `${
-      currentArticle.fields.title
-    } ${currentArticle.fields.content.substring(0, 200)}`;
-
-    const similarArticles = await semanticSearch(searchQuery, 4);
-
-    // Filter out the current article from recommendations
-    const recommendations = similarArticles
-      .filter((article) => article.slug !== articleSlug)
-      .slice(0, 2);
+    const recommendations = processRecommendations(
+      similarArticles,
+      articleSlug,
+      MAX_RECOMMENDATIONS
+    );
 
     res.json({
       success: true,
       data: {
         current_article: currentArticle.fields.title,
-        recommendations: recommendations,
+        recommendations,
       },
     });
   } catch (error) {
+    console.error("Recommendations API error:", error);
+
     res.status(500).json({
-      error: error.message || "Failed to generate recommendations",
+      error: "Failed to generate recommendations",
     });
   }
 }

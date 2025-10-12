@@ -1,4 +1,3 @@
-// pages/api/summarize.js
 import {
   getArticleBySlug,
   updateArticleWithSummary,
@@ -23,13 +22,13 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: "Article not found" });
     }
 
-    // Check if summary already exists in Contentful
-    if (article.fields.aiSummary) {
-      console.log(article.fields.aiSummary);
+    const existingSummary = article.fields.aiSummary;
+
+    if (existingSummary) {
       return res.json({
         success: true,
         data: {
-          summary: article.fields.aiSummary,
+          summary: existingSummary,
           source: "contentful",
           title: article.fields.title,
         },
@@ -41,8 +40,7 @@ export default async function handler(req, res) {
     try {
       await updateArticleWithSummary(article.sys.id, aiSummary);
     } catch (updateError) {
-      console.error("Failed to store summary:", updateError);
-      // Continue - we'll still return the summary
+      console.error("Failed to store summary in Contentful:", updateError);
     }
 
     res.json({
@@ -54,9 +52,10 @@ export default async function handler(req, res) {
       },
     });
   } catch (error) {
-    console.error("Summarize error:", error);
+    console.error("Summarize API error:", error);
+
     res.status(500).json({
-      error: error.message || "Failed to generate summary",
+      error: "Failed to generate summary",
     });
   }
 }
