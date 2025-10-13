@@ -7,6 +7,7 @@ export default function Header() {
 
   const isHomeActive = pathname === "/";
   const isAskAIActive = pathname === "/ask-ai";
+  const isArticlePage = pathname.startsWith("/article/");
 
   const getLinkClass = (isActive) =>
     `text-decoration-none fw-medium pb-1 ${
@@ -32,6 +33,9 @@ export default function Header() {
               >
                 Home
               </Link>
+              {isArticlePage && (
+                <span className={getLinkClass(true)}>Article</span>
+              )}
               <Link
                 href="/ask-ai"
                 className={getLinkClass(isAskAIActive)}
