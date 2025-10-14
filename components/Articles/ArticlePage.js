@@ -50,7 +50,7 @@ export default function ArticlePage({ article }) {
                     {article.fields.content
                       .split("\n\n")
                       .map((paragraph, index) => (
-                        <p key={index} className="mb-4">
+                        <p key={index} className="text-muted mb-4">
                           {paragraph}
                         </p>
                       ))}
