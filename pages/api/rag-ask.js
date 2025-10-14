@@ -1,18 +1,6 @@
 import { getAllArticles } from "../../lib/contentful";
 import { semanticSearch } from "../../lib/pinecone-client";
-import { generateAIResponse } from "../../lib/ai"; // Import from centralized location
-
-// Retry function for reliable API calls
-async function withRetry(operation, maxRetries = 2, delay = 1000) {
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    try {
-      return await operation();
-    } catch (error) {
-      if (attempt === maxRetries) throw error;
-      await new Promise((resolve) => setTimeout(resolve, delay * attempt));
-    }
-  }
-}
+import { generateAIResponse } from "../../lib/ai";
 
 // Build context from relevant articles
 function buildContext(articles) {
@@ -36,10 +24,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Retry semantic search for cold start issues
-    const relevantResults = await withRetry(() =>
-      semanticSearch(trimmedQuestion)
-    );
+    const relevantResults = await semanticSearch(trimmedQuestion);
 
     if (!relevantResults.length) {
       return res.json({
@@ -60,11 +45,7 @@ export default async function handler(req, res) {
       .filter(Boolean);
 
     const context = buildContext(relevantArticles);
-
-    // Retry AI generation for cold start issues - using centralized function
-    const answer = await withRetry(() =>
-      generateAIResponse(context, trimmedQuestion)
-    );
+    const answer = await generateAIResponse(context, trimmedQuestion);
 
     res.json({
       success: true,
