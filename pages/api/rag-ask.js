@@ -24,7 +24,21 @@ export default async function handler(req, res) {
   }
 
   try {
-    const relevantResults = await semanticSearch(trimmedQuestion);
+    let relevantResults;
+    try {
+      relevantResults = await semanticSearch(trimmedQuestion);
+    } catch (searchError) {
+      console.error("Semantic search failed:", searchError);
+      // Return fallback message when search fails
+      return res.json({
+        success: true,
+        data: {
+          answer:
+            "I'm having trouble searching our articles right now. Please try again in a moment.",
+          articlesUsed: 0,
+        },
+      });
+    }
 
     if (!relevantResults.length) {
       return res.json({
@@ -45,7 +59,22 @@ export default async function handler(req, res) {
       .filter(Boolean);
 
     const context = buildContext(relevantArticles);
-    const answer = await generateAIResponse(context, trimmedQuestion);
+
+    let answer;
+    try {
+      answer = await generateAIResponse(context, trimmedQuestion);
+    } catch (aiError) {
+      console.error("AI response failed:", aiError);
+      // Return fallback when AI fails
+      return res.json({
+        success: true,
+        data: {
+          answer:
+            "I found some relevant articles but couldn't generate a response. Please try again.",
+          articlesUsed: relevantArticles.length,
+        },
+      });
+    }
 
     res.json({
       success: true,
