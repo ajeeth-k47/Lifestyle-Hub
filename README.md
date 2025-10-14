@@ -1,4 +1,4 @@
-# 🏠 Lifestyle Hub - AI-Powered Content Platform
+# 🏠 Lifestyle Hub - AI Powered application
 
 A modern lifestyle content hub built with Next.js, featuring AI-powered summarization, semantic search, and intelligent recommendations.
 
@@ -7,7 +7,7 @@ A modern lifestyle content hub built with Next.js, featuring AI-powered summariz
 - **AI Article Summarization** - Automatic concise summaries using Groq AI
 - **Semantic Q&A** - Intelligent question answering using RAG architecture
 - **Smart Recommendations** - Content-based article recommendations
-- **Responsive Design** - Bootstrap-powered mobile-first interface
+- **Responsive Design** - Bootstrap-powered responsive interface
 - **Headless CMS** - Contentful integration for content management
 - **Vector Search** - Pinecone-powered semantic search
 
