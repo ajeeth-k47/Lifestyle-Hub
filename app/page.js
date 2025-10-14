@@ -22,8 +22,6 @@ export default async function Home({ searchParams }) {
       <div className="min-vh-100 bg-light">
         <Header />
         <main className="container py-4">
-          <h1 className="h3 pb-4">Latest Articles</h1>
-
           <ArticleGrid articles={currentArticles} />
 
           {allArticles.length > ARTICLES_PER_PAGE && (
