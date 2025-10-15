@@ -1,44 +1,22 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
-export default function ArticleCard({ article, priority = false }) {
+export default function ArticleCard({ article }) {
   const [summary, setSummary] = useState(article.fields.aiSummary || null);
   const [loading, setLoading] = useState(!article.fields.aiSummary);
   const [error, setError] = useState(null);
-  const cardRef = useRef(null);
-  const hasFetched = useRef(false);
 
   const articleUrl = `/article/${article.fields.slug}`;
 
   useEffect(() => {
-    if (article.fields.aiSummary) return;
-
-    if (!priority && !hasFetched.current) {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting && !hasFetched.current) {
-            fetchSummary();
-            observer.disconnect();
-          }
-        },
-        { threshold: 0.1 }
-      );
-
-      if (cardRef.current) {
-        observer.observe(cardRef.current);
-      }
-
-      return () => observer.disconnect();
-    } else if (priority && !hasFetched.current) {
+    // Fetch summary immediately if not already available
+    if (!article.fields.aiSummary) {
       fetchSummary();
     }
-  }, [priority, article.fields.aiSummary]);
+  }, [article.fields.aiSummary]);
 
   async function fetchSummary() {
-    if (hasFetched.current || article.fields.aiSummary) return;
-
-    hasFetched.current = true;
     setLoading(true);
     setError(null);
 
@@ -69,7 +47,6 @@ export default function ArticleCard({ article, priority = false }) {
 
   return (
     <article
-      ref={cardRef}
       className="card h-100 shadow-sm hover-shadow"
       style={{ transition: "box-shadow 0.3s ease" }}
       aria-labelledby={`article-title-${article.sys.id}`}

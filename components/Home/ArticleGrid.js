@@ -13,7 +13,7 @@ export default function ArticleGrid({ articles }) {
     <section aria-label="Articles grid" className="row g-4">
       {articles.map((article, index) => (
         <div key={article.sys.id} className="col-md-6 col-lg-4">
-          <ArticleCard article={article} priority={index < 3} />
+          <ArticleCard article={article} />
         </div>
       ))}
     </section>
