@@ -27,29 +27,7 @@ A modern lifestyle content hub built with Next.js, featuring AI-powered summariz
 
 ## folder structure
   .
-├── app/                     # Next.js App directory
-│   ├── article/             # Article-specific pages or components
-│   ├── ask-ai/              # Qusetion and Answering page powered with smart assistant named Lily
-│   ├── globals.css          # Global CSS styles
-│   ├── layout.js            # App-wide layout component
-│   └── page.js              # Main app entry page (e.g., homepage)
-│
-├── components/              # Reusable React components
-│   └── ...                  # (Components not expanded in this view)
-│
-├── lib/                     # Utility functions and external service clients
-│   ├── ai.js                # functions and api calls to Groq LLM 
-│   ├── contentful.js        # Integration with Contentful CMS
-│   └── pinecone-client.js   # Pinecone vector DB interaction
-│
-├── pages/                   # API routes
-│   └── api/                 # API endpoints for backend logic
-│       ├── rag-ask.js       # RAG (Retrieval-Augmented Generation) query handler
-│       ├── recommend.js     # Recommendation engine endpoint
-│       └── summarize.js     # Summarization endpoint
-│
-├── node_modules/            # Node dependencies (auto-managed)
-└── ...
+<pre><code> ``` . ├── app/ # Next.js App directory │ ├── article/ # Article-specific pages or components │ ├── ask-ai/ # AI interaction-related pages/components │ ├── globals.css # Global CSS styles │ ├── layout.js # App-wide layout component │ └── page.js # Main app entry page (e.g., homepage) │ ├── components/ # Reusable React components │ └── ... # (Components not expanded in this view) │ ├── lib/ # Utility functions and external service clients │ ├── ai.js # AI-related utility functions │ ├── contentful.js # Integration with Contentful CMS │ └── pinecone-client.js # Pinecone vector DB client setup │ ├── pages/ # API routes │ └── api/ # API endpoints for backend logic │ ├── rag-ask.js # RAG (Retrieval-Augmented Generation) query handler │ ├── recommend.js # Recommendation engine endpoint │ └── summarize.js # Summarization endpoint │ ├── node_modules/ # Node dependencies (auto-managed) └── ... ``` </code></pre>
 
 ## Explanation
 
