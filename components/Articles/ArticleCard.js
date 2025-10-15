@@ -14,7 +14,7 @@ export default function ArticleCard({ article }) {
     if (!article.fields.aiSummary) {
       fetchSummary();
     }
-  }, [article.fields.aiSummary]);
+  }, []);
 
   async function fetchSummary() {
     setLoading(true);
