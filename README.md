@@ -1,4 +1,4 @@
-# 🏠 Lifestyle Hub - AI-Powered Content Platform
+# 🏠 Lifestyle Hub - AI Powered application
 
 A modern lifestyle content hub built with Next.js, featuring AI-powered summarization, semantic search, and intelligent recommendations.
 
@@ -6,8 +6,8 @@ A modern lifestyle content hub built with Next.js, featuring AI-powered summariz
 
 - **AI Article Summarization** - Automatic concise summaries using Groq AI
 - **Semantic Q&A** - Intelligent question answering using RAG architecture
-- **Smart Recommendations** - Content-based article recommendations
-- **Responsive Design** - Bootstrap-powered mobile-first interface
+- **Smart Recommendations** - Article recommendation based on user selected article
+- **Responsive Design** - Bootstrap-powered responsive interface
 - **Headless CMS** - Contentful integration for content management
 - **Vector Search** - Pinecone-powered semantic search
 
@@ -24,6 +24,42 @@ A modern lifestyle content hub built with Next.js, featuring AI-powered summariz
 - Node.js 18+ 
 - npm or yarn
 - Accounts on Contentful, Pinecone, and Groq
+
+## folder structure
+```bash
+.
+├── app/ # Next.js App directory
+│ ├── article/ # Article-specific pages or components
+│ ├── ask-ai/ # AI interaction-related pages/components
+│ ├── globals.css # Global CSS styles
+│ ├── layout.js # App-wide layout component
+│ └── page.js # Main app entry page (e.g., homepage)
+│
+├── components/ # Reusable React components
+│ └── ... # (Components not expanded in this view)
+│
+├── lib/ # Utility functions and external service clients
+│ ├── ai.js # AI-related utility functions
+│ ├── contentful.js # Integration with Contentful CMS
+│ └── pinecone-client.js # Pinecone vector DB client setup
+│
+├── pages/ # API routes
+│ └── api/ # API endpoints for backend logic
+│ ├── rag-ask.js # RAG (Retrieval-Augmented Generation) query handler
+│ ├── recommend.js # Recommendation engine endpoint
+│ └── summarize.js # Summarization endpoint
+│
+├── node_modules/ # Node dependencies (auto-managed)
+└── ...
+```
+
+## Explanation
+
+- **app**: Contains the main application files, including `article`, `ask-ai`, and home page.
+- **components**: Contains the UI components for different sections of the website such as `Articles`, `Home`, and `Layout`.
+- **lib**: Holds utility files like `ai.js`, `contentful.js`, and `pinecone-client.js` to interact with external services.
+- **pages/api**: Contains the API routes for handling requests like `rag-ask.js`, `recommend.js`, and `summarize.js`.
+
 
 ## 🏃‍♂️ Quick Start
 
