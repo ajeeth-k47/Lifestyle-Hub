@@ -61,7 +61,7 @@ export default function ArticlePage({ article }) {
           </div>
 
           <div className="col-lg-4">
-            <aside aria-label="Recommended articles">
+            <aside>
               <h2 className="h5 mb-3">Recommended Articles</h2>
 
               {loading ? (
